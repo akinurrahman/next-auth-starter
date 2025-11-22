@@ -1,0 +1,17 @@
+node_modules
+.next
+dist
+build
+coverage
+public
+*.md
+*.mdx
+.env*
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+.git
+.gitignore
+.prettierignore
+.eslintrc*
+next-env.d.ts
