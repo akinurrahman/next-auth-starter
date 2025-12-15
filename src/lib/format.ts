@@ -1,9 +1,5 @@
 import { format } from 'date-fns';
 
-
-
-
-
 export const formatRole = (role: string | undefined) => {
   switch (role) {
     case 'admin':

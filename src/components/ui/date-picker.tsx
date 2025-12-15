@@ -8,8 +8,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@ui/popover';
 import { format, parse } from 'date-fns';
 import { Calendar as CalendarIcon, X } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
 import { DateDisplayFormat } from '@/features/filters/types';
+import { cn } from '@/lib/utils';
 
 interface DatePickerProps {
   date?: string; // yyyy-MM-dd format
@@ -26,16 +26,14 @@ const DatePicker = ({
   placeholder = 'Pick a date',
   className,
   disabled = false,
-  displayFormat = "PPP",
+  displayFormat = 'PPP',
 }: DatePickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   // convert string (yyyy-MM-dd) into a valid Date
   const parsedDate = date ? parse(date, 'yyyy-MM-dd', new Date()) : undefined;
 
-  const formatted = parsedDate
-    ? format(parsedDate, displayFormat)
-    : placeholder;
+  const formatted = parsedDate ? format(parsedDate, displayFormat) : placeholder;
 
   const handleSelect = (selected?: Date) => {
     if (!selected) {

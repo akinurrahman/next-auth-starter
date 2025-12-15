@@ -5,8 +5,8 @@ import { ThemeProvider } from 'next-themes';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 import { Toaster } from '@/components/ui/sonner';
-import { DeleteConfirmationDialog } from '@/components/shared';
 import '@/lib/api/interceptors';
+import { ConfirmationDialog } from '@/systems/confirmation/components/confirmation-dialog';
 
 import { QueryProvider } from './query-provider';
 
@@ -16,7 +16,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <QueryProvider>
         <NuqsAdapter>
           {children}
-          <DeleteConfirmationDialog />
+          <ConfirmationDialog />
         </NuqsAdapter>
         <Toaster richColors />
       </QueryProvider>
