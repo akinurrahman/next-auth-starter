@@ -1,9 +1,10 @@
+import { UserRole } from '@/constants/ROLES';
 import type { BaseEntity } from '@/types';
 
 export type User = BaseEntity & {
   fullName: string;
   email: string;
-  role: 'admin' | 'operator';
+  role: UserRole;
   isActive: boolean;
   lastLogin: string;
 };

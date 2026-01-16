@@ -1,5 +1,7 @@
 'use client';
 
+import { Suspense } from 'react';
+
 import { ThemeProvider } from 'next-themes';
 
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
@@ -15,7 +17,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <QueryProvider>
         <NuqsAdapter>
-          {children}
+          <Suspense fallback={null}>{children}</Suspense>
           <ConfirmationDialog />
         </NuqsAdapter>
         <Toaster richColors />

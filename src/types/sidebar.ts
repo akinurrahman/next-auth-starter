@@ -1,14 +1,7 @@
-export interface NavItem {
+export type SidebarItem = {
   title: string;
   url: string;
-  icon: string;
-  items?: NavSubItem[];
-  showBadge?: boolean;
+  icon?: string;
   roles?: string[];
-}
-
-export interface NavSubItem {
-  title: string;
-  url: string;
-  roles?: string[];
-}
+  items?: SidebarItem[];
+};

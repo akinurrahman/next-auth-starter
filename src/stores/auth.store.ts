@@ -59,9 +59,25 @@ export const useAuthStore = create<AuthState>()(
         storage: createJSONStorage(() => cookieStorage),
 
         onRehydrateStorage: () => state => {
-          if (state) {
-            state.isAuthInitialized = true;
+          if (!state) return;
+
+          // 👇 DEV DEFAULT USER
+          if (process.env.NODE_ENV === 'development' && !state.user) {
+            state.user = {
+              _id: 'dev-user',
+              email: 'dev@local.test',
+              role: 'ADMIN', // 🔁 change role here
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+              fullName: 'Dev User',
+              isActive: true,
+              lastLogin: new Date().toISOString(),
+            } as User;
+
+            state.isLoggedIn = true;
           }
+
+          state.isAuthInitialized = true;
         },
       }
     )

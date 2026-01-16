@@ -1,13 +1,23 @@
 import { create } from 'zustand';
 
-import { NavItem } from '@/types/sidebar';
+import { SIDEBAR_ITEMS } from '@/constants/SIDEBAR_ITEMS';
+import { SidebarItem } from '@/types/sidebar';
 
-interface SidebarState {
-  sidebarData: NavItem[];
-  setSidebarData: (data: NavItem[]) => void;
-}
+type SidebarState = {
+  sidebarData: SidebarItem[];
+  buildSidebar: (role: string) => void;
+};
 
 export const useSidebarStore = create<SidebarState>(set => ({
   sidebarData: [],
-  setSidebarData: data => set({ sidebarData: data }),
+  buildSidebar: role => {
+    const filtered = SIDEBAR_ITEMS()
+      .filter(item => !item.roles || item.roles.includes(role))
+      .map(item => ({
+        ...item,
+        items: item.items?.filter(sub => !sub.roles || sub.roles.includes(role)),
+      }));
+
+    set({ sidebarData: filtered });
+  },
 }));
