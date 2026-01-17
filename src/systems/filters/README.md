@@ -13,6 +13,8 @@ const config: FilterConfig[] = [
     key: 'status',
     label: 'Status',
     type: 'select',
+    // Responsive span: full width on mobile, half width on desktop
+    span: { mobile: 'full', desktop: 'half' },
     options: [
       { label: 'All', value: 'all' },
       { label: 'Active', value: 'active' },
@@ -24,6 +26,21 @@ const config: FilterConfig[] = [
     key: 'date',
     label: 'Date',
     type: 'date',
+    // Responsive span: full width on mobile, half width on desktop
+    span: { mobile: 'full', desktop: 'half' },
+  },
+  {
+    key: 'category',
+    label: 'Category',
+    type: 'select',
+    // Simple string value still works (defaults to this value on all screens)
+    span: 'full',
+    options: [
+      { label: 'All Categories', value: 'all' },
+      { label: 'Technology', value: 'tech' },
+      { label: 'Business', value: 'business' },
+    ],
+    defaultValue: 'all',
   },
 ];
 
@@ -67,7 +84,17 @@ export function MyPage() {
   key: 'createdAt',
   label: 'Created Date',
   type: 'date',
-  span: 'full', // takes full width
+  span: 'full', // takes full width on all screens
+}
+```
+
+### Date Picker (Responsive)
+```tsx
+{
+  key: 'createdAt',
+  label: 'Created Date',
+  type: 'date',
+  span: { mobile: 'full', desktop: 'half' }, // full on mobile, half on desktop
 }
 ```
 
@@ -104,10 +131,27 @@ interface FilterConfig {
   key: string;                    // URL param key
   label: string;                  // Display label
   type: 'date' | 'select' | 'radio' | 'switch';
-  span?: 'full' | 'half';         // Width (default: 'half')
+  span?: 'full' | 'half' | ResponsiveSpan; // Width (default: 'half')
   options?: FilterOption[];       // For select/radio
   defaultValue?: string;          // Default value
   disabled?: boolean;             // Disable filter
   orientation?: 'horizontal' | 'vertical'; // For radio
 }
+
+interface ResponsiveSpan {
+  mobile?: 'full' | 'half';       // Mobile width (default: 'full')
+  desktop?: 'full' | 'half';      // Desktop width (default: 'half')
+}
 ```
+
+### Span Options
+
+**Simple String:**
+- `'half'` - Half width on all screen sizes
+- `'full'` - Full width on all screen sizes
+
+**Responsive Object:**
+- `{ mobile: 'full', desktop: 'half' }` - Full on mobile, half on desktop (recommended)
+- `{ mobile: 'half', desktop: 'full' }` - Half on mobile, full on desktop
+- `{ mobile: 'full' }` - Full on mobile, defaults to half on desktop
+- `{ desktop: 'half' }` - Defaults to full on mobile, half on desktop

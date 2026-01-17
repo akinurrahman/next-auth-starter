@@ -12,11 +12,18 @@ export interface FilterOption {
   value: string;
 }
 
+export type SpanValue = 'full' | 'half';
+
+export interface ResponsiveSpan {
+  mobile?: SpanValue;
+  desktop?: SpanValue;
+}
+
 export interface FilterConfig {
   key: string;
   label: string;
   type: FilterType;
-  span?: 'full' | 'half';
+  span?: SpanValue | ResponsiveSpan;
   options?: FilterOption[];
   defaultValue?: string;
   disabled?: boolean;
