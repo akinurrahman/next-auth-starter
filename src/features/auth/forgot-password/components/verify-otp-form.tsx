@@ -7,11 +7,11 @@ import { UseMutationResult } from '@tanstack/react-query';
 import { KeyRound } from 'lucide-react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { FormInput } from '@/components/form-input';
 import { Button } from '@/components/ui/button';
 import { Field, FieldDescription, FieldGroup, FieldTitle } from '@/components/ui/field';
 import { useCooldownTimer } from '@/hooks/use-cooldown-timer';
 import { getErrorMessage } from '@/lib/error';
+import { FormInput } from '@/systems/form-input';
 import { BaseApiResponse } from '@/types';
 
 import {

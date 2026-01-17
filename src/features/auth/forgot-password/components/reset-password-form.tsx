@@ -8,9 +8,9 @@ import { LockOpen } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { FormProvider } from 'react-hook-form';
 
-import { FormInput } from '@/components/form-input';
 import { Button } from '@/components/ui/button';
 import { Field, FieldDescription, FieldGroup, FieldTitle } from '@/components/ui/field';
+import { FormInput } from '@/systems/form-input';
 
 import {
   ForgotPasswordResetPasswordInput,

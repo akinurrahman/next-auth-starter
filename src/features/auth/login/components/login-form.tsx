@@ -5,12 +5,12 @@ import { UseMutationResult } from '@tanstack/react-query';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import { Warehouse } from '@/assets';
-import { FormInput } from '@/components/form-input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Field, FieldDescription, FieldGroup } from '@/components/ui/field';
 import { APP_NAME } from '@/constants';
 import { cn } from '@/lib/utils';
+import { FormInput } from '@/systems/form-input';
 
 import { AuthResponse } from '../types/auth.types';
 import { LoginInput } from '../validators/auth.schema';
@@ -28,7 +28,7 @@ const LoginForm = ({ form, onSubmit, mutation }: LoginProps) => {
         <CardContent className="grid p-0 md:grid-cols-2">
           <FormProvider {...form}>
             <form
-              className="flex flex-col justify-center p-6 md:min-h-[500px] md:p-8"
+              className="flex flex-col justify-center p-6 md:min-h-125 md:p-8"
               onSubmit={form.handleSubmit(onSubmit)}
             >
               <FieldGroup>

@@ -19,7 +19,7 @@
       }
     ],
     "paths": {
-      "@form-input": ["./src/components/form-input"],
+      "@form-input": ["./src/systems/form-input"],
       "@ui/*": ["./src/components/ui/*"],
       "@/*": ["./src/*"]
     }
