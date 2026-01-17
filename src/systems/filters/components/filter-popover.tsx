@@ -49,7 +49,7 @@ export function FilterPopover({ config }: FilterPopoverProps) {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[360px] p-4" align="start">
+      <PopoverContent className="w-90 p-4" align="start">
         <div className="grid grid-cols-2 gap-4">
           {config.map(item => (
             <React.Fragment key={item.key}>
