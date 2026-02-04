@@ -1,8 +1,10 @@
+import { BadgeVariant } from '@ui/badge';
+
 export type LookupConfig<T extends string> = Record<
   T,
   {
     label: string;
-    badgeVariant: 'default' | 'success' | 'warning' | 'destructive';
+    badgeVariant: BadgeVariant;
   }
 >;
 

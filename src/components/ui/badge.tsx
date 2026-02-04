@@ -17,7 +17,17 @@ const badgeVariants = cva(
           'border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         outline: 'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
         success:
-          'border-transparent bg-green-500 text-white [a&]:hover:bg-green-600 focus-visible:ring-green-500/20 dark:focus-visible:ring-green-600/40 dark:bg-green-600/60',
+          'border-transparent bg-green-100 text-green-800 [a&]:hover:bg-green-200 dark:bg-green-900/30 dark:text-green-300',
+        warning:
+          'border-transparent bg-amber-100 text-amber-800 [a&]:hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-300',
+        info: 'border-transparent bg-blue-100 text-blue-800 [a&]:hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-300',
+        muted: 'border-transparent bg-muted text-muted-foreground [a&]:hover:bg-muted/80',
+        pending:
+          'border-transparent bg-gray-100 text-gray-800 [a&]:hover:bg-gray-200 dark:bg-gray-900/30 dark:text-gray-300',
+        processing:
+          'border-transparent bg-purple-100 text-purple-800 [a&]:hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-300',
+        neutral:
+          'border-transparent bg-slate-100 text-slate-800 [a&]:hover:bg-slate-200 dark:bg-slate-900/30 dark:text-slate-300',
       },
     },
     defaultVariants: {
@@ -39,4 +49,5 @@ function Badge({
   );
 }
 
+export type BadgeVariant = VariantProps<typeof badgeVariants>['variant'];
 export { Badge, badgeVariants };
