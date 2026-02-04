@@ -13,6 +13,13 @@ export function createLookup<T extends string>(config: LookupConfig<T>) {
 
   return {
     config,
+    keys: Object.keys(config).reduce(
+      (acc, key) => {
+        acc[key as T] = key as T;
+        return acc;
+      },
+      {} as Record<T, T>
+    ),
     values: entries.map(([key]) => key),
     options: entries.map(([value, meta]) => ({
       value,
