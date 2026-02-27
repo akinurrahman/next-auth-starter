@@ -1,4 +1,5 @@
 import { BadgeVariant } from '@ui/badge';
+import z from 'zod';
 
 export type LookupConfig<T extends string> = Record<
   T,
@@ -30,6 +31,9 @@ export function createLookup<T extends string>(config: LookupConfig<T>) {
     },
     getBadgeVariant(value: T) {
       return config[value].badgeVariant;
+    },
+    toZodEnum() {
+      return z.enum(Object.keys(config) as [T, ...T[]]);
     },
   };
 }
