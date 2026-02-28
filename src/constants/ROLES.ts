@@ -1,10 +1,8 @@
-export const USER_ROLES = {
-  SUPER_ADMIN: 'SUPER_ADMIN',
-  ADMIN: 'ADMIN',
-  TEACHER: 'TEACHER',
-  ACCOUNTANT: 'ACCOUNTANT',
-  STUDENT: 'STUDENT',
-  PARENT: 'PARENT',
-} as const;
+import { createLookup } from '@/lib/lookup';
 
-export type UserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES];
+export const USER_ROLES = createLookup({
+  SUPER_ADMIN: { label: 'Super Admin', badgeVariant: 'default' },
+  ADMIN: { label: 'Admin', badgeVariant: 'default' },
+});
+
+export type UserRole = keyof typeof USER_ROLES.config;

@@ -5,3 +5,9 @@ export type SidebarItem = {
   roles?: string[];
   items?: SidebarItem[];
 };
+
+export type SidebarGroup = {
+  group: string;
+  roles?: string[];
+  items: SidebarItem[];
+};
