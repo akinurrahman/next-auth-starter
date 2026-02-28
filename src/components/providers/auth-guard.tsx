@@ -42,7 +42,10 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
     // Authenticated user on auth-only route
     if (isAuthRoute(pathname)) {
-      router.replace(DEFAULT_ROUTES_BY_ROLE[user.role]);
+      const redirectTo = DEFAULT_ROUTES_BY_ROLE[user.role];
+      if (redirectTo) {
+        router.replace(redirectTo);
+      }
       return;
     }
 

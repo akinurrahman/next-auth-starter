@@ -22,7 +22,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     // authenticated + identity known → leave auth pages
     if (accessToken && user?.role) {
       const redirectTo = DEFAULT_ROUTES_BY_ROLE[user.role];
-      router.replace(redirectTo);
+      if (redirectTo) {
+        router.replace(redirectTo);
+      }
     }
   }, [isAuthInitialized, accessToken, user?.role, router]);
 
