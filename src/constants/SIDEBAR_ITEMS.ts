@@ -14,7 +14,7 @@ export const SIDEBAR_ITEMS = (): SidebarGroup[] => [
         title: 'Dashboard',
         url: '/dashboard',
         icon: 'LayoutDashboard',
-        roles: [SUPER_ADMIN],
+        roles: ['SUPER_ADMIN'],
       },
       {
         title: 'Institutions',
