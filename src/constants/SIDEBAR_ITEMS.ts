@@ -2,23 +2,25 @@ import { SidebarGroup } from '@/types/sidebar';
 
 import { USER_ROLES } from './ROLES';
 
+const { SUPER_ADMIN, ADMIN } = USER_ROLES.keys;
+
 export const SIDEBAR_ITEMS = (): SidebarGroup[] => [
   // ─── SUPER ADMIN ────────────────────────────────────────────────────────────
   {
     group: 'Management',
-    roles: [USER_ROLES.keys.SUPER_ADMIN],
+    roles: [SUPER_ADMIN],
     items: [
       {
         title: 'Dashboard',
         url: '/dashboard',
         icon: 'LayoutDashboard',
-        roles: [USER_ROLES.keys.SUPER_ADMIN],
+        roles: [SUPER_ADMIN],
       },
       {
         title: 'Institutions',
         url: '/institutions',
         icon: 'Building2',
-        roles: [USER_ROLES.keys.SUPER_ADMIN],
+        roles: [SUPER_ADMIN],
       },
     ],
   },
@@ -26,49 +28,49 @@ export const SIDEBAR_ITEMS = (): SidebarGroup[] => [
   // ─── ADMIN ──────────────────────────────────────────────────────────────────
   {
     group: 'Institution',
-    roles: [USER_ROLES.keys.ADMIN],
+    roles: [ADMIN],
     items: [
       {
         title: 'Overview',
         url: '/institute/overview',
         icon: 'LayoutDashboard',
-        roles: [USER_ROLES.keys.ADMIN],
+        roles: [ADMIN],
       },
       {
         title: 'Configuration',
         url: '/institute/profile',
         icon: 'Settings2',
-        roles: [USER_ROLES.keys.ADMIN],
+        roles: [ADMIN],
       },
     ],
   },
   {
     group: 'Setup',
-    roles: [USER_ROLES.keys.ADMIN],
+    roles: [ADMIN],
     items: [
       {
         title: 'Classes & Sections',
         url: '/academics/classes',
         icon: 'LayoutGrid',
-        roles: [USER_ROLES.keys.ADMIN],
+        roles: [ADMIN],
       },
       {
         title: 'Subjects',
         url: '/academics/subjects',
         icon: 'BookMarked',
-        roles: [USER_ROLES.keys.ADMIN],
+        roles: [ADMIN],
       },
     ],
   },
   {
     group: 'Academic Year',
-    roles: [USER_ROLES.keys.ADMIN],
+    roles: [ADMIN],
     items: [
       {
         title: 'Academic Years',
         url: '/academics/academic-years',
         icon: 'CalendarDays',
-        roles: [USER_ROLES.keys.ADMIN],
+        roles: [ADMIN],
         items: [
           { title: 'Class Setup', url: '/academics/classes' },
           { title: 'Students', url: '/academics/students' },
@@ -83,19 +85,19 @@ export const SIDEBAR_ITEMS = (): SidebarGroup[] => [
   },
   {
     group: 'Students',
-    roles: [USER_ROLES.keys.ADMIN],
+    roles: [ADMIN],
     items: [
       {
         title: 'All Students',
         url: '/students',
         icon: 'Users',
-        roles: [USER_ROLES.keys.ADMIN],
+        roles: [ADMIN],
       },
       {
         title: 'Login Access',
         url: '/students/login-access',
         icon: 'KeyRound',
-        roles: [USER_ROLES.keys.ADMIN],
+        roles: [ADMIN],
       },
     ],
   },
