@@ -13,10 +13,24 @@ export function NumberInput({ props, field }: NumberProps) {
     <Input
       type="number"
       placeholder={props.placeholder}
-      onChange={e => field.onChange(e.target.value === '' ? '' : Number(e.target.value))}
-      onBlur={field.onBlur}
       value={field.value ?? ''}
       ref={field.ref}
+      onBlur={field.onBlur}
+      disabled={props.disabled}
+      onChange={e => {
+        const val = e.target.value;
+
+        if (val === '') {
+          field.onChange('');
+          return;
+        }
+
+        const num = Number(val);
+
+        if (props.max === undefined || num <= props.max) {
+          field.onChange(num);
+        }
+      }}
     />
   );
 }

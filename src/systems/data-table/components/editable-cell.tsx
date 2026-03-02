@@ -39,12 +39,10 @@ export function EditableCell<TData = unknown, TValue = unknown>({
 }: EditableCellProps<TData, TValue>) {
   const meta = column.columnDef.meta as CustomColumnMeta | undefined;
 
-  // If not editing this cell or field is not editable, render normal cell
   if (!isEditing || meta?.editable === false) {
     return renderDefault();
   }
 
-  // Render different input types based on field type
   if (!meta?.fieldType) {
     return renderDefault();
   }
@@ -131,12 +129,9 @@ export function EditableCell<TData = unknown, TValue = unknown>({
               }
               onSelect={date => {
                 if (date) {
-                  // Fix timezone issue by preserving the selected date exactly
                   const year = date.getFullYear();
                   const month = date.getMonth();
                   const day = date.getDate();
-
-                  // Create a date string in ISO format but with time set to noon to avoid timezone issues
                   const isoDate = new Date(year, month, day, 12, 0, 0).toISOString();
                   onChange(isoDate);
                 } else {
