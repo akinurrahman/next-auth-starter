@@ -1,9 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { ChevronRight } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
@@ -21,39 +19,35 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useInitialSidebarOpen } from '@/lib/navbar/use-initial-sidebar-open';
+import { useResolvedActiveRoute } from '@/lib/navbar/use-resolved-active-route';
+import { useResolvedRoute } from '@/lib/navbar/use-resolved-route';
 import { useSidebarStore } from '@/stores/sidebar.store';
 import { SidebarItem } from '@/types/sidebar';
 
 export function NavMain() {
-  const pathname = usePathname();
   const router = useRouter();
   const groups = useSidebarStore(store => store.sidebarData);
   const { state } = useSidebar();
 
-  const allItems = groups.flatMap(g => g.items);
+  const { resolvedUrl } = useResolvedRoute();
+  const { pathname, isRouteActive, isExact } = useResolvedActiveRoute(resolvedUrl);
 
-  const [openItems, setOpenItems] = useState<Record<string, boolean>>(() => {
-    const initialState: Record<string, boolean> = {};
-    allItems.forEach(item => {
-      if (item.items?.length) {
-        const isChildActive = item.items.some(sub => pathname === sub.url);
-        const isParentActive = pathname === item.url || pathname.startsWith(`${item.url}/`);
-        initialState[item.title] = isChildActive || isParentActive;
-      }
-    });
-    return initialState;
-  });
-
-  const isRouteActive = (url: string) => pathname === url || pathname.startsWith(`${url}/`);
+  const { openItems, setOpenItems } = useInitialSidebarOpen(groups, pathname, resolvedUrl);
 
   const renderItem = (item: SidebarItem) => {
     const hasSubItems = !!item.items?.length;
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const Icon = (LucideIcons as Record<string, any>)[item.icon || 'Star'] || LucideIcons.Star;
 
+    const parentUrl = resolvedUrl(item.url);
+
     if (hasSubItems) {
-      const isChildActive = item.items?.some(sub => pathname === sub.url);
+      const isChildActive = !!item.items?.some(sub => isExact(sub.url));
+
       const isParentActive = isRouteActive(item.url);
+
       const isOpen = openItems[item.title] ?? (isChildActive || isParentActive);
 
       return (
@@ -69,8 +63,11 @@ export function NavMain() {
                   <SidebarMenuButton
                     isActive={isParentActive}
                     onClick={() => {
-                      setOpenItems(prev => ({ ...prev, [item.title]: true }));
-                      router.push(item.url);
+                      setOpenItems(prev => ({
+                        ...prev,
+                        [item.title]: true,
+                      }));
+                      router.push(parentUrl);
                     }}
                   >
                     <Icon />
@@ -82,7 +79,10 @@ export function NavMain() {
                       onClick={e => {
                         e.preventDefault();
                         e.stopPropagation();
-                        setOpenItems(prev => ({ ...prev, [item.title]: !prev[item.title] }));
+                        setOpenItems(prev => ({
+                          ...prev,
+                          [item.title]: !prev[item.title],
+                        }));
                       }}
                     >
                       <ChevronRight
@@ -92,20 +92,26 @@ export function NavMain() {
                   )}
                 </div>
               </TooltipTrigger>
+
               <TooltipContent side="right">{item.title}</TooltipContent>
             </Tooltip>
 
             <CollapsibleContent>
               <SidebarMenuSub>
-                {item.items?.map(sub => (
-                  <SidebarMenuSubItem key={sub.title}>
-                    <SidebarMenuSubButton asChild isActive={pathname === sub.url}>
-                      <Link href={sub.url}>
-                        <span>{sub.title}</span>
-                      </Link>
-                    </SidebarMenuSubButton>
-                  </SidebarMenuSubItem>
-                ))}
+                {item.items?.map(sub => {
+                  const subUrl = resolvedUrl(sub.url);
+                  const isSubActive = isExact(sub.url);
+
+                  return (
+                    <SidebarMenuSubItem key={sub.title}>
+                      <SidebarMenuSubButton asChild isActive={isSubActive}>
+                        <Link href={subUrl}>
+                          <span>{sub.title}</span>
+                        </Link>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  );
+                })}
               </SidebarMenuSub>
             </CollapsibleContent>
           </SidebarMenuItem>
@@ -118,12 +124,13 @@ export function NavMain() {
         <Tooltip>
           <TooltipTrigger asChild>
             <SidebarMenuButton asChild isActive={isRouteActive(item.url)}>
-              <Link href={item.url}>
+              <Link href={parentUrl}>
                 <Icon />
                 <span>{item.title}</span>
               </Link>
             </SidebarMenuButton>
           </TooltipTrigger>
+
           <TooltipContent side="right">{item.title}</TooltipContent>
         </Tooltip>
       </SidebarMenuItem>
@@ -135,6 +142,7 @@ export function NavMain() {
       {groups.map(group => (
         <SidebarGroup key={group.group} className="py-0">
           <SidebarGroupLabel className="h-7">{group.group}</SidebarGroupLabel>
+
           <SidebarMenu>{group.items.map(renderItem)}</SidebarMenu>
         </SidebarGroup>
       ))}
