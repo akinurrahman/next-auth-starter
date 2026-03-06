@@ -1,7 +1,8 @@
 # CRUD Feature Guide — Full-Page Form Pattern
-> Attach alongside `crud-base.md` + `crud-table.md` when the feature uses **dedicated `/create` and `/[id]/edit` routes**.  
-> Use this pattern when the form has 3+ fields or needs its own page-level breadcrumb/context.  
-> For 1–2 field forms, use `crud-dialog-form.md` instead.
+
+> Read alongside [`crud-base.md`](./crud-base.md) + [`crud-table.md`](./crud-table.md) when the feature uses **dedicated `/create` and `/[id]/edit` routes**.
+> Use this pattern when the form has 3+ fields or warrants its own page-level breadcrumb and context.
+> For 1–2 field forms, use [`crud-dialog-form.md`](./crud-dialog-form.md) instead.
 
 ---
 
@@ -143,7 +144,7 @@ export default FeatureList;
 - `'use client'` directive required.
 - `BreadcrumpSetter` is always the first child inside `<Card>`.
 - List page `PageHeader` gets `icon`, no `onBack`.
-- Omit `QueryParamSelect` if the feature has no status/enum filter.
+- Omit `QueryParamSelect` if the feature has no status/enum filter. Use `FilterPopover` when there are 2+ filters.
 
 ---
 
@@ -201,7 +202,6 @@ export default FeatureForm;
 
 **Rules:**
 - `'use client'` directive required.
-- `useParams()` cast with the exact param key matching the dynamic folder name (e.g. `{ yearId }`, `{ featureId }`).
 - Form page `PageHeader` gets `onBack`, no `icon`.
-- `FormProvider` wraps the entire `<form>`.
-- `ActionButtons` always last inside the form.
+- `BreadcrumpSetter` is not used on the form page — only the list page sets breadcrumbs.
+- `ActionButtons` does not receive `onCancel` on the page form — only `isSubmitting` and `onReset`.

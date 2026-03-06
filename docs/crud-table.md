@@ -1,5 +1,7 @@
 # CRUD Feature Guide — Table Layer
-> Attach alongside `crud-base.md` for every feature. This file covers both the standard and dialog variants — the column and table shape is the same either way; only `onEdit` differs.
+
+> Read alongside [`crud-base.md`](./crud-base.md) for every feature.
+> This file covers both the standard and dialog variants — the column and table shape is the same either way; only `onEdit`'s signature differs.
 
 ---
 
@@ -163,7 +165,7 @@ export default FeatureTable;
 
 ### Dialog variant
 
-Removes all routing. Receives `onEdit: (item: Feature) => void` as a prop — provided by the list page from `modal.openModal`.
+The table receives `onEdit` as a prop (instead of owning the router navigation) because the list page owns the modal state:
 
 ```tsx
 import React from 'react';
@@ -180,7 +182,7 @@ interface FeatureTableProps {
   data:       Feature[];
   pagination: Pagination | undefined;
   isLoading:  boolean;
-  onEdit:     (item: Feature) => void;   // ← passed in from list page
+  onEdit:     (item: Feature) => void;   // ← injected from list page
 }
 
 const FeatureTable = ({ data, pagination, isLoading, onEdit }: FeatureTableProps) => {
@@ -213,9 +215,4 @@ const FeatureTable = ({ data, pagination, isLoading, onEdit }: FeatureTableProps
 export default FeatureTable;
 ```
 
-**Rules (both variants):**
-- Dumb component: receives data, passes to `DataTable`, wires handlers.
-- All mutations happen here — NOT in column definitions.
-
-**Standard only:** Navigation to edit uses `nav.edit(pathname, id)`.  
-**Dialog only:** No `useRouter`, `usePathname`, or `nav` — routing is fully replaced by the `onEdit` prop.
+**Key difference:** the standard table owns `onEdit` internally (uses router); the dialog table receives it as a prop from the list page because the list page owns `useModalState`.

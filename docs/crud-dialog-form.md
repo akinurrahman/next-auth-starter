@@ -1,7 +1,8 @@
 # CRUD Feature Guide — Dialog Form Pattern
-> Attach alongside `crud-base.md` + `crud-table.md` when the feature has **1–2 fields** and opening a full page is overkill.  
-> Uses a shadcn `Dialog` managed by `useModalState`. No `/create` or `/[id]/edit` routes are generated.  
-> For 3+ field forms, use `crud-page-form.md` instead.
+
+> Read alongside [`crud-base.md`](./crud-base.md) + [`crud-table.md`](./crud-table.md) when the feature has **1–2 fields** and opening a full page is overkill.
+> Uses a shadcn `Dialog` managed by `useModalState`. No `/create` or `/[id]/edit` routes are generated.
+> For 3+ field forms, use [`crud-page-form.md`](./crud-page-form.md) instead.
 
 ---
 
@@ -80,7 +81,7 @@ No `useRouter`, `usePathname`, or `nav` imports — navigation is replaced entir
 
 ## 2. `pages/<feature>-list.tsx`
 
-The list page is the single orchestrator — it owns `useModalState`, wires `onEdit`, and renders the dialog.
+The list page is the single orchestrator — it owns `useModalState`, wires `onEdit` into the table, and renders the dialog.
 
 ```tsx
 'use client';
@@ -152,8 +153,8 @@ export default FeatureList;
 - `BreadcrumpSetter` is always the first child inside `<Card>`.
 - No `useRouter`, `usePathname`, or `nav` imports.
 - `modal.openModal()` (no args) → create mode; `modal.openModal(item)` → edit mode.
-- `<FeatureDialog>` always rendered as the last child inside `<Card>`.
-- Omit `QueryParamSelect` if the feature has no status/enum filter.
+- `<FeatureDialog>` is always rendered as the **last child** inside `<Card>`.
+- Omit `QueryParamSelect` if the feature has no status/enum filter. Use `FilterPopover` when there are 2+ filters.
 
 ---
 
@@ -216,9 +217,7 @@ export default FeatureDialog;
 ```
 
 **Rules:**
-- `onOpenChange={onClose}` ensures the dialog closes on backdrop click or Escape key.
-- `item === null` drives create mode; `item !== null` drives edit mode — same derivation as in `useFeatureForm`.
-- `ActionButtons` receives `onCancel={onClose}` so the cancel button closes the dialog.
-- `<feature>-dialog.tsx` lives in `components/`, not `pages/` — it has no route association.
-- `FormProvider` wraps the entire `<form>` inside `DialogContent`.
-- `ActionButtons` always last inside the form.
+- `item === null` means create mode; `item !== null` means edit mode — derive `isEditMode` from this, never from a separate boolean prop.
+- `ActionButtons` receives `onCancel={onClose}` here (unlike the page form which omits it).
+- No `BreadcrumpSetter`, no `PageHeader` — this is a dialog, not a page.
+- No routing imports (`useRouter`, `usePathname`, `nav`).

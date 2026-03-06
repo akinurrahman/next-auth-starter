@@ -1,13 +1,13 @@
 # CRUD Feature Guide — Base
-> **Always attach this file** to every AI session, regardless of which form pattern you use.
-> Then attach exactly one of: `crud-page-form.md` or `crud-dialog-form.md`.
-> Also always attach: `crud-table.md`.
+
+> Read this file for every new feature, regardless of which form pattern you use.
+> Then read [`crud-table.md`](./crud-table.md) and exactly one of [`crud-page-form.md`](./crud-page-form.md) or [`crud-dialog-form.md`](./crud-dialog-form.md).
 
 ---
 
-## 1. What You (the developer) provide before asking AI
+## 1. Pre-Implementation Checklist
 
-For each new feature, you create these files manually (AI must NOT touch them):
+Before writing any components, create these four files manually. They represent your feature's data contract and are never generated — they come from the API spec and your product requirements.
 
 | File | Purpose |
 |---|---|
@@ -16,13 +16,13 @@ For each new feature, you create these files manually (AI must NOT touch them):
 | `definitions/<feature>.types.ts` | Response types and `ListQueryParams` shape |
 | `definitions/<feature>.schema.ts` | Zod schema + inferred `Input` type |
 
-Once those exist, attach this file + the relevant pattern files and ask AI to generate the rest.
+Once those exist, follow the rest of this guide to implement the UI layer.
 
 ---
 
 ## 2. Feature Folder Layout
 
-Domain is **optional**. Use a domain when the feature belongs to a broad topic area; omit it for standalone features.
+Domain is **optional**. Use a domain when the feature belongs to a broad topic area (e.g. `academics-management`); omit it for standalone features.
 
 ```
 # with domain
@@ -66,7 +66,7 @@ src/features/<feature-name>/
     └── use-<feature>-form.ts
 ```
 
-No App route files are needed beyond the list page — create and edit open as dialogs.
+No extra App route files are needed beyond the list page — create and edit open as dialogs on the same page.
 
 ---
 
@@ -84,7 +84,7 @@ export default function Page() {
 }
 ```
 
-**Standard only** — also generate these two routes:
+**Standard only** — also create these two routes:
 
 ```tsx
 // src/app/(protected)/<feature>/create/page.tsx
@@ -106,7 +106,7 @@ export default function Page() {
 }
 ```
 
-> **Dialog variant:** Only generate the list route (`page.tsx`). Skip `/create` and `/[featureId]/edit` entirely — create and edit are handled by a dialog on the list page.
+> **Dialog variant:** Only create the list route (`page.tsx`). Skip `/create` and `/[featureId]/edit` entirely — create and edit are handled by a dialog on the list page.
 
 ---
 
@@ -147,7 +147,7 @@ export type FeatureListQueryParams = {
 ```
 
 **Where entity types live:**
-- Feature-specific entities (e.g. `Feature`) — import from `definitions/<feature>.types.ts`. The developer declares or re-exports them there.
+- Feature-specific entities (e.g. `Feature`) — declare or re-export them in `definitions/<feature>.types.ts`.
 - Shared pagination/response wrappers (`Pagination`, `ApiResponse<T>`, `PaginatedApiResponse<T>`) — import from `@/types`.
 
 ---
@@ -171,11 +171,11 @@ export type FeatureInput = z.infer<typeof featureSchema>;
 
 ## 7. `hooks/use-<feature>.ts`
 
-All API hooks live here, plus the **aggregator hook** `useFeatureQuery` used by the list page.
+All API hooks live here, plus the **aggregator hook** `useFeatureQuery` consumed by the list page.
 
 **Aggregator placement rule:**
-- Keep `useFeatureQuery` in this file by default — it is tightly coupled to the get hooks here.
-- Only extract it if this file grows beyond ~150 lines / 6+ mutations; in that case move mutations to `use-<feature>-mutations.ts` and keep query hooks (including the aggregator) here.
+- Keep `useFeatureQuery` in this file by default — it is tightly coupled to the query hooks here.
+- Only extract mutations if this file grows beyond ~150 lines or 6+ mutations; in that case move mutations to `use-<feature>-mutations.ts` and keep query hooks (including the aggregator) here.
 
 ```typescript
 import { useSearchParams } from 'next/navigation';
@@ -253,11 +253,12 @@ export const useFeatureQuery = () => {
 ## 8. Shared Components Reference
 
 ### `PageHeader`
+
 ```tsx
-// List page — icon, no back
+// List page — icon, no back button
 <PageHeader title="Title" description="Subtitle" icon={<Icon />} />
 
-// Form page — back, no icon
+// Form page — back button, no icon
 <PageHeader
   title={isEditMode ? 'Edit X' : 'Create X'}
   description="..."
@@ -266,15 +267,18 @@ export const useFeatureQuery = () => {
 ```
 
 ### `BreadcrumpSetter`
+
 ```tsx
 <BreadcrumpSetter items={[
   { title: 'Parent', url: '/parent' },
   { title: 'Current', url: '#' },
 ]} />
 ```
-Always first child inside `<Card>`.
+
+Always the **first child** inside `<Card>`.
 
 ### `ActionButtons`
+
 ```tsx
 <ActionButtons
   isSubmitting={isSubmitting}
@@ -285,6 +289,7 @@ Always first child inside `<Card>`.
 ```
 
 ### `SearchInput`
+
 ```tsx
 <SearchInput
   placeholder="Search..."
@@ -338,6 +343,7 @@ const filterConfig: FilterConfig[] = [
 **Span options:** `'full'` · `'half'` · `{ mobile: 'full' | 'half', desktop: 'full' | 'half' }`
 
 ### `DataTable`
+
 ```tsx
 import { DataTable } from '@/systems/data-table';
 
@@ -345,6 +351,7 @@ import { DataTable } from '@/systems/data-table';
 ```
 
 ### `FormInput`
+
 ```tsx
 import { FormInput } from '@form-input';
 
@@ -353,9 +360,11 @@ import { FormInput } from '@form-input';
 <FormInput fieldType="textarea" name="description" placeholder="..." />
 <FormInput fieldType="select"   name="status" options={FeatureStatus.options} placeholder="..." />
 ```
-Must be inside `<FormProvider>`.
+
+Must be placed inside `<FormProvider>`.
 
 ### `useConfirmation`
+
 ```tsx
 import { useConfirmation } from '@/systems/confirmation/hooks/use-confirmation';
 
@@ -403,25 +412,29 @@ confirm({
 
 ---
 
-## 11. Pre-Implementation Checklist
+## 11. Implementation Checklist
 
-Before asking AI to implement, confirm you have created:
+### Before you start
 
-- [ ] `hooks/use-<feature>.ts` — API hooks + `useXxxQuery` aggregator
-- [ ] `definitions/<feature>.constants.ts` — all `createLookup` configs
-- [ ] `definitions/<feature>.types.ts` — `ListQueryParams` type defined
-- [ ] `definitions/<feature>.schema.ts` — Zod schema + `Input` type
+- [ ] `hooks/use-<feature>.ts` — API hooks + `useXxxQuery` aggregator written
+- [ ] `definitions/<feature>.constants.ts` — all `createLookup` configs defined
+- [ ] `definitions/<feature>.types.ts` — entity type + `ListQueryParams` type defined
+- [ ] `definitions/<feature>.schema.ts` — Zod schema + `Input` type defined
 
-**Standard (page form) — AI generates:**
+### Standard (full-page form)
+
 1. `components/<feature>-column.tsx`
 2. `components/<feature>-table.tsx`
-3. `pages/<feature>-list.tsx`
-4. `pages/<feature>-form.tsx`
-5. App routes: `page.tsx`, `create/page.tsx`, `[featureId]/edit/page.tsx`
-
-**Dialog variant — AI generates:**
-1. `components/<feature>-column.tsx`
-2. `components/<feature>-table.tsx`
-3. `components/<feature>-dialog.tsx`
+3. `hooks/use-<feature>-form.ts`
 4. `pages/<feature>-list.tsx`
-5. App route: `page.tsx` only
+5. `pages/<feature>-form.tsx`
+6. App routes: `page.tsx`, `create/page.tsx`, `[featureId]/edit/page.tsx`
+
+### Dialog variant
+
+1. `components/<feature>-column.tsx`
+2. `components/<feature>-table.tsx`
+3. `hooks/use-<feature>-form.ts`
+4. `components/<feature>-dialog.tsx`
+5. `pages/<feature>-list.tsx`
+6. App route: `page.tsx` only
