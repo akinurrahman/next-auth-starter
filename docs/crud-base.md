@@ -125,10 +125,11 @@ export type FeatureStatusType = keyof typeof FeatureStatus.config;
 ```
 
 `createLookup` returns:
-- `.keys` — `{ DRAFT: 'DRAFT', ACTIVE: 'ACTIVE', ... }`
+- `.config` — the raw config record (full metadata per key)
+- `.keys` — `{ DRAFT: 'DRAFT', ACTIVE: 'ACTIVE', ... }` → use for safe key references
+- `.values` — `['DRAFT', 'ACTIVE', ...]` → array of all enum strings
 - `.options` — `[{ value: 'DRAFT', label: 'Draft' }, ...]` → use in `QueryParamSelect` and form selects
-- `.getLabel(value)` — display string
-- `.getBadgeVariant(value)` — badge variant string
+- `.resolve(value)` — returns the full config entry `{ label, badgeVariant, icon?, ... }` for a given value, or `null` with a console warning if unknown/missing
 - `.toZodEnum()` — `z.enum([...])`
 
 ---
