@@ -24,7 +24,7 @@ interface LoginProps {
 const LoginForm = ({ form, onSubmit, mutation }: LoginProps) => {
   return (
     <div className={cn('flex flex-col gap-6')}>
-      <Card className="overflow-hidden p-0">
+      <Card className="overflow-hidden p-0 shadow-xl shadow-black/8 dark:shadow-black/40">
         <CardContent className="grid p-0 md:grid-cols-2">
           <FormProvider {...form}>
             <form
@@ -32,10 +32,10 @@ const LoginForm = ({ form, onSubmit, mutation }: LoginProps) => {
               onSubmit={form.handleSubmit(onSubmit)}
             >
               <FieldGroup>
-                <div className="mb-4 flex flex-col items-center gap-2 text-center">
-                  <h1 className="text-2xl font-bold">Welcome back</h1>
-                  <p className="text-muted-foreground text-balance">
-                    Login to your {APP_NAME} account
+                <div className="mb-6 flex flex-col items-center gap-2 text-center">
+                  <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
+                  <p className="text-muted-foreground text-sm text-balance">
+                    Sign in to your {APP_NAME} account
                   </p>
                 </div>
 

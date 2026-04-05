@@ -1,15 +1,16 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 
 import { Providers } from '@/components/providers';
 import { APP_NAME } from '@/constants';
 
 import './globals.css';
 
-const inter = Inter({
-  variable: '--font-inter',
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: '--font-sans',
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -24,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${plusJakartaSans.className} antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>

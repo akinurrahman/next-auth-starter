@@ -6,34 +6,34 @@ import { type VariantProps, cva } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const badgeVariants = cva(
-  'inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden',
+  'inline-flex items-center justify-center rounded-full border px-2.5 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none transition-colors overflow-hidden',
   {
     variants: {
       variant: {
         default: 'border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90',
 
         secondary:
-          'border-transparent bg-secondary/50 text-secondary-foreground dark:bg-secondary/30 [a&]:hover:bg-secondary/70 dark:[a&]:hover:bg-secondary/50',
+          'border-transparent bg-secondary/80 text-secondary-foreground dark:bg-secondary/40 [a&]:hover:bg-secondary/60',
 
         destructive:
           'border-transparent bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 [a&]:hover:bg-red-200 dark:[a&]:hover:bg-red-900/50',
 
         outline:
-          'border border-border bg-transparent text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
+          'border-border bg-transparent text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
 
         success:
-          'border-transparent bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 [a&]:hover:bg-green-200 dark:[a&]:hover:bg-green-900/50',
+          'border-transparent bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 [a&]:hover:bg-emerald-200',
 
         warning:
-          'border-transparent bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 [a&]:hover:bg-yellow-200 dark:[a&]:hover:bg-yellow-900/50',
+          'border-transparent bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400 [a&]:hover:bg-amber-200',
 
-        info: 'border-transparent bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 [a&]:hover:bg-blue-200 dark:[a&]:hover:bg-blue-900/50',
+        info: 'border-transparent bg-sky-100 text-sky-800 dark:bg-sky-900/30 dark:text-sky-400 [a&]:hover:bg-sky-200',
 
         pending:
-          'border-transparent bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400 [a&]:hover:bg-orange-200 dark:[a&]:hover:bg-orange-900/50',
+          'border-transparent bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400 [a&]:hover:bg-orange-200',
 
         inactive:
-          'border-transparent bg-slate-100 text-slate-700 dark:bg-slate-800/40 dark:text-slate-300 [a&]:hover:bg-slate-200 dark:[a&]:hover:bg-slate-700/50',
+          'border-transparent bg-stone-100 text-stone-600 dark:bg-stone-800/50 dark:text-stone-400 [a&]:hover:bg-stone-200',
 
         muted: 'border-transparent bg-muted text-muted-foreground [a&]:hover:bg-muted/80',
       },

@@ -14,7 +14,7 @@ const PageHeader = ({ title, description, icon, onBack }: PageHeaderProps) => {
   return (
     <div className="flex items-center gap-3">
       {!onBack && (
-        <div className="bg-primary-500/10 text-primary hidden h-12 w-12 items-center justify-center rounded-lg sm:flex">
+        <div className="bg-primary/10 text-primary ring-primary/20 hidden h-10 w-10 items-center justify-center rounded-lg ring-1 sm:flex">
           {icon}
         </div>
       )}
