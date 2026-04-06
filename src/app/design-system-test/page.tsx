@@ -31,6 +31,28 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  PolarAngleAxis,
+  PolarGrid,
+  PolarRadiusAxis,
+  Radar,
+  RadarChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 import ActionButtons from '@/components/shared/action-buttons';
 import AnimatedTabs from '@/components/shared/animated-tabs';
@@ -261,6 +283,79 @@ const userColumns: ColumnDef<DemoUser>[] = [
   },
 ];
 
+/* ─────────────────────────── chart data ─────────────────────────── */
+
+const MONTHLY_REVENUE = [
+  { month: 'Jan', revenue: 32000, expenses: 21000 },
+  { month: 'Feb', revenue: 38000, expenses: 24000 },
+  { month: 'Mar', revenue: 29000, expenses: 19000 },
+  { month: 'Apr', revenue: 45000, expenses: 27000 },
+  { month: 'May', revenue: 41000, expenses: 25000 },
+  { month: 'Jun', revenue: 52000, expenses: 31000 },
+  { month: 'Jul', revenue: 48000, expenses: 28000 },
+  { month: 'Aug', revenue: 61000, expenses: 34000 },
+  { month: 'Sep', revenue: 57000, expenses: 32000 },
+  { month: 'Oct', revenue: 68000, expenses: 38000 },
+  { month: 'Nov', revenue: 74000, expenses: 41000 },
+  { month: 'Dec', revenue: 89000, expenses: 47000 },
+];
+
+const WEEKLY_VISITORS = [
+  { day: 'Mon', visitors: 1842 },
+  { day: 'Tue', visitors: 2391 },
+  { day: 'Wed', visitors: 2105 },
+  { day: 'Thu', visitors: 3274 },
+  { day: 'Fri', visitors: 3820 },
+  { day: 'Sat', visitors: 1658 },
+  { day: 'Sun', visitors: 1124 },
+];
+
+const TRAFFIC_SOURCES = [
+  { name: 'Organic', value: 42 },
+  { name: 'Direct', value: 28 },
+  { name: 'Referral', value: 18 },
+  { name: 'Social', value: 12 },
+];
+
+const CONVERSION_TREND = [
+  { month: 'Jan', rate: 3.2 },
+  { month: 'Feb', rate: 3.8 },
+  { month: 'Mar', rate: 3.5 },
+  { month: 'Apr', rate: 4.1 },
+  { month: 'May', rate: 4.6 },
+  { month: 'Jun', rate: 4.3 },
+  { month: 'Jul', rate: 5.0 },
+  { month: 'Aug', rate: 5.4 },
+  { month: 'Sep', rate: 5.1 },
+  { month: 'Oct', rate: 5.8 },
+  { month: 'Nov', rate: 6.2 },
+  { month: 'Dec', rate: 6.7 },
+];
+
+const PERFORMANCE_METRICS = [
+  { metric: 'Quality', thisYear: 88, lastYear: 72 },
+  { metric: 'Speed', thisYear: 76, lastYear: 61 },
+  { metric: 'Reliability', thisYear: 94, lastYear: 85 },
+  { metric: 'Support', thisYear: 82, lastYear: 68 },
+  { metric: 'Value', thisYear: 79, lastYear: 74 },
+  { metric: 'Innovation', thisYear: 91, lastYear: 58 },
+];
+
+const REVENUE_BREAKDOWN = [
+  { month: 'Jan', saas: 18000, services: 9000, other: 5000 },
+  { month: 'Feb', saas: 22000, services: 11000, other: 5000 },
+  { month: 'Mar', saas: 17000, services: 8000, other: 4000 },
+  { month: 'Apr', saas: 27000, services: 13000, other: 5000 },
+  { month: 'May', saas: 25000, services: 12000, other: 4000 },
+  { month: 'Jun', saas: 32000, services: 15000, other: 5000 },
+  { month: 'Jul', saas: 29000, services: 14000, other: 5000 },
+  { month: 'Aug', saas: 38000, services: 17000, other: 6000 },
+  { month: 'Sep', saas: 35000, services: 16000, other: 6000 },
+  { month: 'Oct', saas: 42000, services: 19000, other: 7000 },
+  { month: 'Nov', saas: 46000, services: 21000, other: 7000 },
+  { month: 'Dec', saas: 55000, services: 26000, other: 8000 },
+];
+
 /* ─────────────────────────── filter & tab demo data ─────────────────────────── */
 
 const FILTER_OPTIONS = [
@@ -352,6 +447,7 @@ const NAV_GROUPS: NavGroup[] = [
     label: 'Data & Metrics',
     items: [
       { id: 'stats', label: 'Statistics', icon: BarChart3 },
+      { id: 'charts', label: 'Charts', icon: Activity },
       {
         id: 'datatable',
         label: 'Data Table',
@@ -430,7 +526,7 @@ export default function Page() {
                           </CollapsibleTrigger>
                           <CollapsibleContent>
                             <SidebarMenuSub>
-                              {item.subitems!.map(sub => (
+                              {(item.subitems ?? []).map(sub => (
                                 <SidebarMenuSubItem key={sub.id}>
                                   <SidebarMenuSubButton
                                     isActive={activeSection === sub.id}
@@ -864,6 +960,424 @@ export default function Page() {
                   </div>
                 );
               })}
+            </div>
+          </section>
+
+          <Separator />
+
+          {/* ─────────── Charts ─────────── */}
+          <section id="charts" className="scroll-mt-14 space-y-4">
+            <SectionHeader
+              title="Charts"
+              description="Recharts — area, bar, line, donut, radar, and stacked bar variants"
+            />
+            <div className="grid gap-5 sm:grid-cols-2">
+              {/* Area Chart */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium">Revenue vs Expenses</CardTitle>
+                  <CardDescription>Monthly comparison — area chart</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={200}>
+                    <AreaChart
+                      data={MONTHLY_REVENUE}
+                      margin={{ top: 4, right: 4, left: -20, bottom: 0 }}
+                    >
+                      <defs>
+                        <linearGradient id="gradRevenue" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3} />
+                          <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
+                        </linearGradient>
+                        <linearGradient id="gradExpenses" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="var(--muted-foreground)" stopOpacity={0.2} />
+                          <stop offset="95%" stopColor="var(--muted-foreground)" stopOpacity={0} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="var(--border)"
+                        vertical={false}
+                      />
+                      <XAxis
+                        dataKey="month"
+                        tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <YAxis
+                        tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
+                        axisLine={false}
+                        tickLine={false}
+                        tickFormatter={v => `$${v / 1000}k`}
+                      />
+                      <Tooltip
+                        contentStyle={{
+                          background: 'var(--card)',
+                          border: '1px solid var(--border)',
+                          borderRadius: 8,
+                          fontSize: 12,
+                        }}
+                        labelStyle={{ color: 'var(--foreground)', fontWeight: 600 }}
+                        itemStyle={{ color: 'var(--muted-foreground)' }}
+                        formatter={v => [`$${(Number(v) / 1000).toFixed(1)}k`]}
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="revenue"
+                        stroke="var(--primary)"
+                        strokeWidth={2}
+                        fill="url(#gradRevenue)"
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="expenses"
+                        stroke="var(--muted-foreground)"
+                        strokeWidth={1.5}
+                        fill="url(#gradExpenses)"
+                        strokeDasharray="4 2"
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                  <div className="text-muted-foreground mt-3 flex items-center gap-4 text-xs">
+                    <span className="flex items-center gap-1.5">
+                      <span
+                        className="inline-block h-2 w-4 rounded-full"
+                        style={{ background: 'var(--primary)' }}
+                      />
+                      Revenue
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span
+                        className="inline-block h-2 w-4 rounded-full opacity-50"
+                        style={{ background: 'var(--muted-foreground)' }}
+                      />
+                      Expenses
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Bar Chart */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium">Weekly Visitors</CardTitle>
+                  <CardDescription>Unique visitors per day — bar chart</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={200}>
+                    <BarChart
+                      data={WEEKLY_VISITORS}
+                      margin={{ top: 4, right: 4, left: -20, bottom: 0 }}
+                      barSize={28}
+                    >
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="var(--border)"
+                        vertical={false}
+                      />
+                      <XAxis
+                        dataKey="day"
+                        tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <YAxis
+                        tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
+                        axisLine={false}
+                        tickLine={false}
+                        tickFormatter={v => `${(v / 1000).toFixed(1)}k`}
+                      />
+                      <Tooltip
+                        contentStyle={{
+                          background: 'var(--card)',
+                          border: '1px solid var(--border)',
+                          borderRadius: 8,
+                          fontSize: 12,
+                        }}
+                        labelStyle={{ color: 'var(--foreground)', fontWeight: 600 }}
+                        itemStyle={{ color: 'var(--muted-foreground)' }}
+                        cursor={{ fill: 'var(--muted)', radius: 4 }}
+                      />
+                      <Bar dataKey="visitors" fill="var(--primary)" radius={[4, 4, 0, 0]}>
+                        {WEEKLY_VISITORS.map((_, i) => (
+                          <Cell key={i} fillOpacity={i === 4 ? 1 : 0.55} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                  <p className="text-muted-foreground mt-3 text-xs">
+                    Friday peaks at 3,820 unique visitors
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Line Chart */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
+                  <CardDescription>Monthly trend — line chart</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={200}>
+                    <LineChart
+                      data={CONVERSION_TREND}
+                      margin={{ top: 4, right: 4, left: -20, bottom: 0 }}
+                    >
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="var(--border)"
+                        vertical={false}
+                      />
+                      <XAxis
+                        dataKey="month"
+                        tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <YAxis
+                        tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
+                        axisLine={false}
+                        tickLine={false}
+                        tickFormatter={v => `${v}%`}
+                        domain={[2, 6]}
+                      />
+                      <Tooltip
+                        contentStyle={{
+                          background: 'var(--card)',
+                          border: '1px solid var(--border)',
+                          borderRadius: 8,
+                          fontSize: 12,
+                        }}
+                        labelStyle={{ color: 'var(--foreground)', fontWeight: 600 }}
+                        itemStyle={{ color: 'var(--muted-foreground)' }}
+                        formatter={v => [`${v}%`, 'Conversion']}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="rate"
+                        stroke="var(--primary)"
+                        strokeWidth={2.5}
+                        dot={{
+                          r: 4,
+                          fill: 'var(--primary)',
+                          strokeWidth: 2,
+                          stroke: 'var(--card)',
+                        }}
+                        activeDot={{ r: 5 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                  <p className="text-muted-foreground mt-3 text-xs">
+                    +68% improvement over 8 months
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Donut Chart */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium">Traffic Sources</CardTitle>
+                  <CardDescription>Acquisition breakdown — donut chart</CardDescription>
+                </CardHeader>
+                <CardContent className="flex items-center gap-6">
+                  <ResponsiveContainer width={140} height={140}>
+                    <PieChart>
+                      <Pie
+                        data={TRAFFIC_SOURCES}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={42}
+                        outerRadius={64}
+                        paddingAngle={3}
+                        dataKey="value"
+                        strokeWidth={0}
+                      >
+                        {TRAFFIC_SOURCES.map((_, i) => (
+                          <Cell
+                            key={i}
+                            fill={
+                              [
+                                'var(--primary)',
+                                'color-mix(in oklch, var(--primary) 65%, var(--background))',
+                                'color-mix(in oklch, var(--primary) 40%, var(--background))',
+                                'color-mix(in oklch, var(--primary) 20%, var(--background))',
+                              ][i]
+                            }
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        contentStyle={{
+                          background: 'var(--card)',
+                          border: '1px solid var(--border)',
+                          borderRadius: 8,
+                          fontSize: 12,
+                        }}
+                        formatter={v => [`${v}%`]}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="flex flex-1 flex-col gap-2">
+                    {TRAFFIC_SOURCES.map((src, i) => (
+                      <div key={src.name} className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className="h-2 w-2 shrink-0 rounded-full"
+                            style={{
+                              background: [
+                                'var(--primary)',
+                                'color-mix(in oklch, var(--primary) 65%, var(--background))',
+                                'color-mix(in oklch, var(--primary) 40%, var(--background))',
+                                'color-mix(in oklch, var(--primary) 20%, var(--background))',
+                              ][i],
+                            }}
+                          />
+                          <span className="text-muted-foreground text-xs">{src.name}</span>
+                        </div>
+                        <span className="text-xs font-semibold tabular-nums">{src.value}%</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Radar / Spider Chart */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium">Team Performance</CardTitle>
+                  <CardDescription>Year-over-year comparison — radar chart</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={220}>
+                    <RadarChart
+                      data={PERFORMANCE_METRICS}
+                      margin={{ top: 4, right: 24, left: 24, bottom: 4 }}
+                    >
+                      <PolarGrid stroke="var(--border)" />
+                      <PolarAngleAxis
+                        dataKey="metric"
+                        tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
+                      />
+                      <PolarRadiusAxis angle={90} domain={[0, 100]} tick={false} axisLine={false} />
+                      <Radar
+                        name="This Year"
+                        dataKey="thisYear"
+                        stroke="var(--primary)"
+                        fill="var(--primary)"
+                        fillOpacity={0.25}
+                        strokeWidth={2}
+                      />
+                      <Radar
+                        name="Last Year"
+                        dataKey="lastYear"
+                        stroke="var(--muted-foreground)"
+                        fill="var(--muted-foreground)"
+                        fillOpacity={0.1}
+                        strokeWidth={1.5}
+                        strokeDasharray="4 2"
+                      />
+                      <Tooltip
+                        contentStyle={{
+                          background: 'var(--card)',
+                          border: '1px solid var(--border)',
+                          borderRadius: 8,
+                          fontSize: 12,
+                        }}
+                        labelStyle={{ color: 'var(--foreground)', fontWeight: 600 }}
+                        itemStyle={{ color: 'var(--muted-foreground)' }}
+                      />
+                      <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11 }} />
+                    </RadarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              {/* Stacked Bar Chart */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium">Revenue Breakdown</CardTitle>
+                  <CardDescription>Monthly by category — stacked bar chart</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={200}>
+                    <BarChart
+                      data={REVENUE_BREAKDOWN}
+                      margin={{ top: 4, right: 4, left: -20, bottom: 0 }}
+                      barSize={14}
+                    >
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="var(--border)"
+                        vertical={false}
+                      />
+                      <XAxis
+                        dataKey="month"
+                        tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <YAxis
+                        tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
+                        axisLine={false}
+                        tickLine={false}
+                        tickFormatter={v => `$${v / 1000}k`}
+                      />
+                      <Tooltip
+                        contentStyle={{
+                          background: 'var(--card)',
+                          border: '1px solid var(--border)',
+                          borderRadius: 8,
+                          fontSize: 12,
+                        }}
+                        labelStyle={{ color: 'var(--foreground)', fontWeight: 600 }}
+                        formatter={v => [`$${(Number(v) / 1000).toFixed(1)}k`]}
+                      />
+                      <Bar dataKey="saas" name="SaaS" stackId="rev" fill="var(--primary)" />
+                      <Bar
+                        dataKey="services"
+                        name="Services"
+                        stackId="rev"
+                        fill="color-mix(in oklch, var(--primary) 60%, var(--background))"
+                      />
+                      <Bar
+                        dataKey="other"
+                        name="Other"
+                        stackId="rev"
+                        fill="color-mix(in oklch, var(--primary) 28%, var(--background))"
+                        radius={[4, 4, 0, 0]}
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                  <div className="text-muted-foreground mt-3 flex items-center gap-4 text-xs">
+                    <span className="flex items-center gap-1.5">
+                      <span
+                        className="inline-block h-2 w-3 rounded-full"
+                        style={{ background: 'var(--primary)' }}
+                      />
+                      SaaS
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span
+                        className="inline-block h-2 w-3 rounded-full"
+                        style={{
+                          background: 'color-mix(in oklch, var(--primary) 60%, var(--background))',
+                        }}
+                      />
+                      Services
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span
+                        className="inline-block h-2 w-3 rounded-full"
+                        style={{
+                          background: 'color-mix(in oklch, var(--primary) 28%, var(--background))',
+                        }}
+                      />
+                      Other
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </section>
 
