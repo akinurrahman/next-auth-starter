@@ -14,7 +14,24 @@ import { QueryProvider } from './query-provider';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="light"
+      themes={[
+        'light',
+        'dark',
+        'forest',
+        'forest-light',
+        'crimson',
+        'crimson-dark',
+        'amber',
+        'amber-dark',
+        'obsidian',
+        'obsidian-light',
+        'violet-light',
+        'violet-dark',
+      ]}
+    >
       <QueryProvider>
         <NuqsAdapter>
           <Suspense fallback={null}>{children}</Suspense>

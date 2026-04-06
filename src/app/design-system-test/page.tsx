@@ -530,21 +530,15 @@ export default function Page() {
                   Primary
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                  {[
-                    ['50', 'bg-primary-50'],
-                    ['100', 'bg-primary-100'],
-                    ['200', 'bg-primary-200'],
-                    ['300', 'bg-primary-300'],
-                    ['400', 'bg-primary-400'],
-                    ['500', 'bg-primary-500'],
-                    ['600', 'bg-primary-600'],
-                    ['700', 'bg-primary-700'],
-                    ['800', 'bg-primary-800'],
-                    ['900', 'bg-primary-900'],
-                  ].map(([label, cls]) => (
-                    <div key={label} className="flex flex-col items-center gap-1">
-                      <div className={cn('h-8 w-8 rounded border shadow-xs', cls)} />
-                      <span className="text-muted-foreground text-[9px]">{label}</span>
+                  {[8, 15, 25, 35, 45, 55, 65, 75, 85, 95].map((opacity, i) => (
+                    <div key={opacity} className="flex flex-col items-center gap-1">
+                      <div
+                        className="h-8 w-8 rounded border shadow-xs"
+                        style={{
+                          background: `color-mix(in oklch, var(--primary) ${opacity}%, var(--background))`,
+                        }}
+                      />
+                      <span className="text-muted-foreground text-[9px]">{(i + 1) * 100}</span>
                     </div>
                   ))}
                 </div>
