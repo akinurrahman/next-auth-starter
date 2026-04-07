@@ -1,104 +1,58 @@
 import { SidebarGroup } from '@/types/sidebar';
 
-import { USER_ROLES } from './ROLES';
-
-const { SUPER_ADMIN, ADMIN } = USER_ROLES.keys;
-
 export const SIDEBAR_ITEMS = (): SidebarGroup[] => [
-  // ─── SUPER ADMIN ────────────────────────────────────────────────────────────
   {
-    group: 'Management',
-    roles: [SUPER_ADMIN],
+    group: 'General',
     items: [
-      {
-        title: 'Dashboard',
-        url: '/dashboard',
-        icon: 'LayoutDashboard',
-        roles: ['SUPER_ADMIN'],
-      },
-      {
-        title: 'Institutions',
-        url: '/institutions',
-        icon: 'Building2',
-        roles: [SUPER_ADMIN],
-      },
+      { title: 'Dashboard', url: '/dashboard', icon: 'LayoutDashboard' },
+      { title: 'Activity', url: '/activity', icon: 'Activity' },
+      { title: 'Notifications', url: '/notifications', icon: 'Bell' },
     ],
   },
 
-  // ─── ADMIN ──────────────────────────────────────────────────────────────────
   {
-    group: 'Institution',
-    roles: [ADMIN],
+    group: 'Workspace',
     items: [
-      {
-        title: 'Overview',
-        url: '/institute/overview',
-        icon: 'LayoutDashboard',
-        roles: [ADMIN],
-      },
-      {
-        title: 'Configuration',
-        url: '/institute/profile',
-        icon: 'Settings2',
-        roles: [ADMIN],
-      },
+      { title: 'Projects', url: '/projects', icon: 'FolderKanban' },
+      { title: 'Tasks', url: '/tasks', icon: 'CheckSquare' },
+      { title: 'Calendar', url: '/calendar', icon: 'CalendarDays' },
+      { title: 'Files', url: '/files', icon: 'Folder' },
     ],
   },
+
   {
-    group: 'Setup',
-    roles: [ADMIN],
+    group: 'Team',
     items: [
-      {
-        title: 'Classes & Sections',
-        url: '/academics/classes',
-        icon: 'LayoutGrid',
-        roles: [ADMIN],
-      },
-      {
-        title: 'Subjects',
-        url: '/academics/subjects',
-        icon: 'BookMarked',
-        roles: [ADMIN],
-      },
+      { title: 'Members', url: '/team/members', icon: 'Users' },
+      { title: 'Roles & Permissions', url: '/team/roles', icon: 'Shield' },
+      { title: 'Invitations', url: '/team/invitations', icon: 'UserPlus' },
     ],
   },
+
   {
-    group: 'Academic Year',
-    roles: [ADMIN],
+    group: 'Reports',
     items: [
       {
-        title: 'Academic Years',
-        url: '/academics/academic-years',
-        icon: 'CalendarDays',
-        roles: [ADMIN],
+        title: 'Analytics',
+        url: '/reports/analytics',
+        icon: 'BarChart3',
         items: [
-          { title: 'Class Setup', url: '/academics/classes' },
-          { title: 'Students', url: '/academics/students' },
-          { title: 'Exams', url: '/academics/exams' },
-          { title: 'Marks', url: '/academics/marks' },
-          { title: 'Results', url: '/academics/results' },
-          { title: 'Annual Results', url: '/academics/annual-results' },
-          { title: 'Promotion', url: '/academics/promotion' },
+          { title: 'Overview', url: '/reports/analytics/overview' },
+          { title: 'Usage', url: '/reports/analytics/usage' },
+          { title: 'Performance', url: '/reports/analytics/performance' },
         ],
       },
+      { title: 'Logs', url: '/reports/logs', icon: 'FileText' },
     ],
   },
+
   {
-    group: 'Students',
-    roles: [ADMIN],
+    group: 'Settings',
     items: [
-      {
-        title: 'All Students',
-        url: '/students',
-        icon: 'Users',
-        roles: [ADMIN],
-      },
-      {
-        title: 'Login Access',
-        url: '/students/login-access',
-        icon: 'KeyRound',
-        roles: [ADMIN],
-      },
+      { title: 'Profile', url: '/settings/profile', icon: 'User' },
+      { title: 'Billing', url: '/settings/billing', icon: 'CreditCard' },
+      { title: 'Integrations', url: '/settings/integrations', icon: 'Plug' },
+      { title: 'API Keys', url: '/settings/api-keys', icon: 'Key' },
     ],
   },
 ];

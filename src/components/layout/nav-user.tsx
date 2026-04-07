@@ -1,8 +1,8 @@
 'use client';
 
-import { useTheme } from 'next-themes';
+import Link from 'next/link';
 
-import { ChevronsUpDown, LogOut, Moon, Sun } from 'lucide-react';
+import { ChevronsUpDown, LogOut, Palette } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -32,13 +32,8 @@ interface props {
 
 export function NavUser({ user }: props) {
   const { isMobile } = useSidebar();
-  const { setTheme, resolvedTheme } = useTheme();
 
   const logoutMutation = useLogout();
-
-  const handleThemeToggle = () => {
-    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
-  };
 
   const handleLogout = async () => {
     try {
@@ -92,13 +87,11 @@ export function NavUser({ user }: props) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={handleThemeToggle}>
-                {resolvedTheme === 'dark' ? (
-                  <Sun className="size-4" />
-                ) : (
-                  <Moon className="size-4" />
-                )}
-                {resolvedTheme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+              <DropdownMenuItem asChild>
+                <Link href="/theme-switcher" className="flex w-full items-center gap-2">
+                  <Palette className="size-4" />
+                  Theme
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
