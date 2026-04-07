@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ThemePreview } from './theme-preview';
 import type { ThemeFamily } from './types';
@@ -61,6 +61,11 @@ export function FamilyCard({ family, activeThemeId, delay, onApply }: Props) {
 
   const [mode, setMode] = useState<'light' | 'dark'>(isDarkActive ? 'dark' : 'light');
   const [hovered, setHovered] = useState(false);
+
+  useEffect(() => {
+    if (isDarkActive) setMode('dark');
+    else if (isLightActive) setMode('light');
+  }, [isDarkActive, isLightActive]);
 
   const variant = mode === 'light' ? family.light : family.dark;
   const accent = variant.accentHex;
