@@ -1,1 +1,1 @@
-export const APP_NAME = 'IMS';
+export const APP_NAME = 'Next Auth Starter';
