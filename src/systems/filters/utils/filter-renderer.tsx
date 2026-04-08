@@ -11,9 +11,11 @@ import { FilterConfig } from '../types';
 export function renderFilterField(
   item: FilterConfig,
   value: string | undefined,
-  onChange: (v?: string) => void
+  onChange: (v?: string) => void,
+  allFilters: Record<string, string | undefined> = {}
 ) {
   const disabled = item.disabled;
+  const resolvedOptions = item.optionsFn?.(allFilters) ?? item.options ?? [];
 
   switch (item.type) {
     case 'date': {
@@ -39,7 +41,7 @@ export function renderFilterField(
               <SelectValue placeholder="Select..." />
             </SelectTrigger>
             <SelectContent>
-              {item.options?.map(o => (
+              {resolvedOptions.map(o => (
                 <SelectItem key={o.value} value={o.value}>
                   {o.label}
                 </SelectItem>
