@@ -1,54 +1,178 @@
-// import { useState } from "react";
-// import { useFormContext } from "react-hook-form";
-// import { uploadToCloud } from "@/services/file-upload/file-upload";
-// import { getCloudinaryThumbnail } from "@/utils/generate-thumbnail";
+import { useEffect, useRef, useState } from 'react';
 
-// interface UseFileUploadProps {
-//   name: string;
-//   multiple?: boolean;
-// }
+import { ControllerRenderProps } from 'react-hook-form';
 
-// export const useFileUpload = ({
-//   name,
-//   multiple = false,
-// }: UseFileUploadProps) => {
-//   const { setValue, watch } = useFormContext();
-//   const [uploading, setUploading] = useState(false);
-//   const uploadedFiles = watch(name) || [];
+import { UploadedFileInfo } from '../fields/file-upload/types';
+import { generateFileKey, uploadFileToCloud } from '../fields/file-upload/utils';
+import { FileUploadCategory } from '../types';
 
-//   const handleFileChange = async (
-//     event: React.ChangeEvent<HTMLInputElement>
-//   ) => {
-//     const files = event.target.files;
-//     if (!files || !files.length) return;
+interface UseFileUploadOptions {
+  category: FileUploadCategory;
+  multiple?: boolean;
+  field: ControllerRenderProps;
+}
 
-//     setUploading(true);
-//     const fileArray = Array.from(files);
-//     const cloudinaryUrls = await uploadToCloud(fileArray);
+export function useFileUpload({ category, multiple, field }: UseFileUploadOptions) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadedFiles, setUploadedFiles] = useState<Record<string, UploadedFileInfo>>({});
 
-//     if (cloudinaryUrls) {
-//       const thumbnails = cloudinaryUrls.map(getCloudinaryThumbnail);
-//       const newFiles = cloudinaryUrls.map((url: string, index: number) => ({
-//         url,
-//         thumbnail: thumbnails[index],
-//       }));
+  // Handle initial/default values from form
+  useEffect(() => {
+    const initialValue = field.value;
 
-//       setValue(name, multiple ? [...uploadedFiles, ...newFiles] : newFiles);
-//     }
-//     setUploading(false);
-//   };
+    // If no value, clear files
+    if (!initialValue) {
+      setUploadedFiles({});
+      return;
+    }
 
-//   const handleRemoveFile = (index: number) => {
-//     const updatedFiles = uploadedFiles.filter(
-//       (_: any, i: number) => i !== index
-//     );
-//     setValue(name, updatedFiles);
-//   };
+    const urls = Array.isArray(initialValue) ? initialValue : [initialValue];
 
-//   return {
-//     uploadedFiles,
-//     uploading,
-//     handleFileChange,
-//     handleRemoveFile,
-//   };
-// };
+    // Check if current uploaded files match the form value
+    const currentUrls = Object.values(uploadedFiles)
+      .map(f => f.url)
+      .filter(Boolean);
+    const urlsMatch =
+      currentUrls.length === urls.length && urls.every((url: string) => currentUrls.includes(url));
+
+    // Only update if values don't match (avoid infinite loop)
+    if (urlsMatch) return;
+
+    const initialFiles: Record<string, UploadedFileInfo> = {};
+
+    urls.forEach((url: string, index: number) => {
+      if (!url) return;
+
+      // Create a mock File object for existing files
+      const fileName = url.split('/').pop() || `file-${index}`;
+      const fileKey = `existing-${fileName}-${index}`;
+
+      initialFiles[fileKey] = {
+        file: new File([], fileName, { type: 'application/octet-stream' }),
+        url,
+        progress: 100,
+        uploading: false,
+        error: null,
+      };
+    });
+
+    setUploadedFiles(initialFiles);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [field.value]);
+
+  const handleFileUpload = async (file: File) => {
+    const fileKey = generateFileKey(file);
+
+    // Initialize file state
+    setUploadedFiles(prev => ({
+      ...prev,
+      [fileKey]: {
+        file,
+        url: null,
+        progress: 0,
+        uploading: true,
+        error: null,
+      },
+    }));
+
+    try {
+      // Simulate progress
+      const progressInterval = setInterval(() => {
+        setUploadedFiles(prev => {
+          const current = prev[fileKey];
+          if (!current || current.progress >= 90) {
+            clearInterval(progressInterval);
+            return prev;
+          }
+          return {
+            ...prev,
+            [fileKey]: {
+              ...current,
+              progress: Math.min(current.progress + Math.random() * 20, 90),
+            },
+          };
+        });
+      }, 300);
+
+      // Upload file
+      const url = await uploadFileToCloud(file, category);
+
+      clearInterval(progressInterval);
+
+      // Update file state with URL
+      setUploadedFiles(prev => ({
+        ...prev,
+        [fileKey]: {
+          ...prev[fileKey],
+          url,
+          progress: 100,
+          uploading: false,
+        },
+      }));
+
+      // Update form field value
+      if (multiple) {
+        const currentUrls = Array.isArray(field.value) ? field.value : [];
+        field.onChange([...currentUrls, url]);
+      } else {
+        field.onChange(url);
+      }
+    } catch (error) {
+      setUploadedFiles(prev => ({
+        ...prev,
+        [fileKey]: {
+          ...prev[fileKey],
+          uploading: false,
+          error: error instanceof Error ? error.message : 'Upload failed',
+        },
+      }));
+    }
+  };
+
+  const handleFileSelect = (files: FileList | null) => {
+    if (!files) return;
+
+    const newFiles = Array.from(files);
+
+    if (!multiple && newFiles.length > 0) {
+      // For single file upload, clear existing files
+      setUploadedFiles({});
+    }
+
+    // Upload files
+    newFiles.forEach(file => {
+      handleFileUpload(file);
+    });
+  };
+
+  const removeFile = (fileKey: string) => {
+    const fileInfo = uploadedFiles[fileKey];
+    if (!fileInfo) return;
+
+    setUploadedFiles(prev => {
+      const newFiles = { ...prev };
+      delete newFiles[fileKey];
+      return newFiles;
+    });
+
+    // Update form field value
+    if (multiple && fileInfo.url) {
+      const currentUrls = Array.isArray(field.value) ? field.value : [];
+      field.onChange(currentUrls.filter((url: string) => url !== fileInfo.url));
+    } else {
+      field.onChange(null);
+    }
+  };
+
+  const openFilePicker = () => {
+    fileInputRef.current?.click();
+  };
+
+  return {
+    fileInputRef,
+    uploadedFiles,
+    handleFileSelect,
+    removeFile,
+    openFilePicker,
+  };
+}

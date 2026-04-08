@@ -1,9 +1,10 @@
 import { ControllerRenderProps } from 'react-hook-form';
 
 import { CheckboxField } from './fields/check-box';
+import { renderFileByVariant } from './fields/file-upload';
 import { renderInputByType } from './fields/input';
 import RadioGroupComponent from './fields/radio-group';
-import SelectField from './fields/select-field';
+import { renderSelectByType } from './fields/select';
 import SliderField from './fields/slider-field';
 import SwitchField from './fields/switch-field';
 import TextArea from './fields/text-area';
@@ -16,11 +17,11 @@ export function renderFieldByType(props: FormInputProps, field: ControllerRender
     case 'textarea':
       return <TextArea props={props} field={field} />;
     case 'select':
-      return <SelectField props={props} field={field} />;
+      return renderSelectByType(props, field);
     case 'slider':
       return <SliderField props={props} />;
-    // case "file":
-    //   return renderFileByVariant(props);
+    case 'file':
+      return renderFileByVariant(props, field);
     case 'checkbox':
       return <CheckboxField />;
     case 'switch':
