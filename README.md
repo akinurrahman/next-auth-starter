@@ -57,8 +57,7 @@ src/
 │  │  ├─ components/
 │  │  ├─ hooks/
 │  │  ├─ pages/
-│  │  ├─ types/
-│  │  └─ validators/
+│  │  ├─ definations/
 │  └─ dashboard/
 │
 ├─ components/
