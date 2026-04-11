@@ -17,7 +17,7 @@ export default function ThemeSwitcherPage() {
     setMounted(true);
   }, []);
 
-  const activeThemeId = mounted ? (theme ?? 'light') : 'light';
+  const activeThemeId = mounted ? (theme ?? 'stone-light') : 'stone-light';
 
   return (
     <div className="relative min-h-screen" style={{ background: 'var(--background)' }}>

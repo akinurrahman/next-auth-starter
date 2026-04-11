@@ -5,7 +5,7 @@ export const FAMILIES: ThemeFamily[] = [
     index: '01',
     name: 'Stone',
     light: {
-      id: 'light',
+      id: 'stone-light',
       accentHex: '#3a6cb5',
       tagline: 'Warm neutrals · Classic blue',
       preview: {
@@ -24,7 +24,7 @@ export const FAMILIES: ThemeFamily[] = [
       },
     },
     dark: {
-      id: 'dark',
+      id: 'stone-dark',
       accentHex: '#6b96d9',
       tagline: 'Deep navy · Electric blue',
       preview: {

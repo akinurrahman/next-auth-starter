@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is(.stone-dark *));
 
 /* ================================================================
    PALETTE — Stone Neutrals + Classic Blue
@@ -9,7 +9,7 @@
    which references them via var(). All other themes use direct
    OKLCH values for full self-containment.
    ================================================================ */
-:root {
+.stone-light {
   /* Stone Neutral Scale */
   --base-50: oklch(0.985 0.003 88);
   --base-100: oklch(0.963 0.006 85);
@@ -80,7 +80,7 @@
 }
 
 /* ── Stone Dark — Midnight Navy ── */
-.dark {
+.stone-dark {
   --background: oklch(0.128 0.014 248);
   --foreground: var(--base-100);
   --card: oklch(0.155 0.014 248);

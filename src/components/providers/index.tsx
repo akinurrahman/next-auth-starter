@@ -16,10 +16,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="light"
+      defaultTheme="stone-light"
       themes={[
-        'light',
-        'dark',
+        'stone-light',
+        'stone-dark',
         'forest',
         'forest-light',
         'crimson',
