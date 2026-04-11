@@ -561,7 +561,7 @@ export default function LandingPage() {
           <p className="text-[11px] text-white/22">
             Built by{' '}
             <a
-              href="https://github.com/akinurrahman/next-auth-starter"
+              href="https://www.akinurrahman.com/"
               target="_blank"
               rel="noreferrer"
               className="transition-colors hover:text-white/50"
@@ -576,7 +576,7 @@ export default function LandingPage() {
               Themes
             </Link>
             <a
-              href="https://github.com/akinurrahman/next-auth-starter"
+              href="https://github.com/akinurrahman/"
               target="_blank"
               rel="noreferrer"
               className="transition-colors hover:text-white/60"
