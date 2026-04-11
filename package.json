@@ -16,7 +16,7 @@
     "check-all": "pnpm type-check && pnpm lint && pnpm format:check",
     "fix-all": "pnpm format && pnpm lint:fix",
     "prepare": "husky",
-    "create:feature": "node scripts/create-feature.mjs"
+    "dev:network": "next dev --turbopack -H 0.0.0.0"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import {
-  ArrowRight,
   Code2,
   Database,
   Layers,
@@ -22,7 +21,6 @@ import {
   Zap,
 } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 /* ── GitHub icon (not in lucide-react v1.x) ────────────────────── */
@@ -106,20 +104,20 @@ const STACK = [
 ] as const;
 
 const TREE: { text: string; cls: string; comment?: string }[] = [
-  { text: 'src/', cls: 'text-[#7dd3fc] font-semibold' },
-  { text: '├─ app/', cls: 'text-[#f8fafc]/75' },
-  { text: '│  ├─ (auth)/', cls: 'text-[#f8fafc]/45', comment: '# login · forgot-password' },
-  { text: '│  └─ (protected)/', cls: 'text-[#f8fafc]/45', comment: '# dashboard · settings' },
-  { text: '├─ features/', cls: 'text-[#f8fafc]/75' },
-  { text: '│  ├─ auth/', cls: 'text-[#f8fafc]/45', comment: '# components · hooks' },
-  { text: '│  └─ dashboards/', cls: 'text-[#f8fafc]/45' },
-  { text: '├─ components/', cls: 'text-[#f8fafc]/75' },
-  { text: '│  ├─ layout/', cls: 'text-[#f8fafc]/45', comment: '# sidebar · header' },
-  { text: '│  ├─ providers/', cls: 'text-[#f8fafc]/45', comment: '# query · theme' },
-  { text: '│  └─ ui/', cls: 'text-[#f8fafc]/45', comment: '# shadcn primitives' },
-  { text: '├─ lib/', cls: 'text-[#f8fafc]/75' },
-  { text: '│  └─ api/', cls: 'text-[#f8fafc]/45', comment: '# axios · interceptors' },
-  { text: '└─ stores/', cls: 'text-[#f8fafc]/75' },
+  { text: 'src/', cls: 'text-primary font-semibold' },
+  { text: '├─ app/', cls: 'text-white/75' },
+  { text: '│  ├─ (auth)/', cls: 'text-white/45', comment: '# login · forgot-password' },
+  { text: '│  └─ (protected)/', cls: 'text-white/45', comment: '# dashboard · settings' },
+  { text: '├─ features/', cls: 'text-white/75' },
+  { text: '│  ├─ auth/', cls: 'text-white/45', comment: '# components · hooks' },
+  { text: '│  └─ dashboards/', cls: 'text-white/45' },
+  { text: '├─ components/', cls: 'text-white/75' },
+  { text: '│  ├─ layout/', cls: 'text-white/45', comment: '# sidebar · header' },
+  { text: '│  ├─ providers/', cls: 'text-white/45', comment: '# query · theme' },
+  { text: '│  └─ ui/', cls: 'text-white/45', comment: '# shadcn primitives' },
+  { text: '├─ lib/', cls: 'text-white/75' },
+  { text: '│  └─ api/', cls: 'text-white/45', comment: '# axios · interceptors' },
+  { text: '└─ stores/', cls: 'text-white/75' },
 ];
 
 /* ── Animation variants ───────────────────────────────────────── */
@@ -157,15 +155,15 @@ export default function LandingPage() {
 
   return (
     <div
-      className="min-h-screen overflow-x-hidden bg-[#09090c] text-white selection:bg-blue-500/30"
+      className="selection:bg-primary/30 min-h-screen overflow-x-hidden bg-[#09090c] text-white"
       style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
     >
       {/* ── Navbar ─────────────────────────────────────────── */}
       <header className="fixed top-0 right-0 left-0 z-50 border-b border-white/6 bg-[#09090c]/80 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]">
-              <Terminal size={13} className="text-white" />
+            <div className="bg-primary flex h-6 w-6 items-center justify-center rounded-md shadow-[0_0_10px_color-mix(in_oklch,var(--color-primary)_50%,transparent)]">
+              <Terminal size={13} className="text-primary-foreground" />
             </div>
             <span className="text-sm font-semibold tracking-tight">next-auth-starter</span>
           </div>
@@ -183,20 +181,23 @@ export default function LandingPage() {
             >
               Stack
             </a>
+            <Link
+              href="/theme-switcher"
+              className="text-xs text-white/40 transition-colors hover:text-white/70"
+            >
+              Themes
+            </Link>
           </nav>
 
           <div className="flex items-center gap-3">
             <a
-              href="https://github.com/akinurrahman/vite-react-starter"
+              href="https://github.com/akinurrahman/next-auth-starter"
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-1.5 text-sm text-white/40 transition-colors hover:text-white/70"
             >
               <GitHubIcon size={15} />
             </a>
-            <Button asChild size="sm" className="h-8 text-xs">
-              <Link href="/login">Get started</Link>
-            </Button>
           </div>
         </div>
       </header>
@@ -213,9 +214,9 @@ export default function LandingPage() {
           }}
         />
         {/* Glow blobs */}
-        <div className="pointer-events-none absolute top-0 left-1/2 h-125 w-175 -translate-x-1/2 -translate-y-1/3 rounded-full bg-blue-600/12 blur-[130px]" />
-        <div className="pointer-events-none absolute top-32 left-[8%] h-90 w-90 rounded-full bg-blue-700/8 blur-[80px]" />
-        <div className="pointer-events-none absolute right-[5%] bottom-0 h-70 w-70 rounded-full bg-blue-500/6 blur-[70px]" />
+        <div className="bg-primary/12 pointer-events-none absolute top-0 left-1/2 h-125 w-175 -translate-x-1/2 -translate-y-1/3 rounded-full blur-[130px]" />
+        <div className="bg-primary/8 pointer-events-none absolute top-32 left-[8%] h-90 w-90 rounded-full blur-[80px]" />
+        <div className="bg-primary/6 pointer-events-none absolute right-[5%] bottom-0 h-70 w-70 rounded-full blur-[70px]" />
 
         <div className="relative mx-auto max-w-6xl">
           {/* Badge */}
@@ -225,7 +226,7 @@ export default function LandingPage() {
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="mb-7 flex"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/25 bg-blue-500/8 px-3 py-1.5 text-[11px] font-medium text-blue-300">
+            <div className="border-primary/25 bg-primary/8 text-primary inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-medium">
               <Sparkles size={10} />
               <span>Production-ready · Open source · v0.1.0</span>
             </div>
@@ -242,7 +243,7 @@ export default function LandingPage() {
                 style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
               >
                 Skip the boring{' '}
-                <em className="bg-linear-to-br from-blue-300 via-blue-400 to-blue-500 bg-clip-text text-transparent not-italic">
+                <em className="from-primary/60 via-primary to-primary bg-linear-to-br bg-clip-text text-transparent not-italic">
                   setup.
                 </em>
                 <br />
@@ -266,21 +267,22 @@ export default function LandingPage() {
                 transition={{ delay: 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className="flex flex-wrap gap-3"
               >
-                <Button asChild size="lg" className="h-11 gap-1.5 px-6 text-sm font-medium">
-                  <Link href="/login">
-                    Open the demo
-                    <ArrowRight size={15} />
-                  </Link>
-                </Button>
                 <a
-                  href="https://github.com/akinurrahman/vite-react-starter"
+                  href="https://github.com/akinurrahman/next-auth-starter"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex h-11 items-center gap-2 rounded-md border border-white/10 bg-white/4 px-6 text-sm font-medium text-white/60 transition-all hover:border-white/15 hover:bg-white/8 hover:text-white/90"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-11 items-center gap-2 rounded-md px-6 text-sm font-medium shadow-sm transition-all"
                 >
                   <GitHubIcon size={16} />
                   Clone on GitHub
                 </a>
+                <Link
+                  href="/theme-switcher"
+                  className="inline-flex h-11 items-center gap-2 rounded-md border border-white/10 bg-white/4 px-6 text-sm font-medium text-white/60 transition-all hover:border-white/15 hover:bg-white/8 hover:text-white/90"
+                >
+                  <Palette size={15} />
+                  Browse themes
+                </Link>
               </motion.div>
 
               {/* Quick stat row */}
@@ -387,8 +389,8 @@ export default function LandingPage() {
             className="mb-14"
           >
             <div className="mb-4 flex items-center gap-2">
-              <div className="h-4 w-px bg-blue-500" />
-              <p className="text-xs font-semibold tracking-[0.18em] text-blue-400 uppercase">
+              <div className="bg-primary h-4 w-px" />
+              <p className="text-primary text-xs font-semibold tracking-[0.18em] uppercase">
                 What&apos;s included
               </p>
             </div>
@@ -415,16 +417,16 @@ export default function LandingPage() {
                   variants={fadeUp}
                   className={cn(
                     'group relative rounded-xl border border-white/7 bg-white/2 p-5',
-                    'transition-all duration-300 hover:border-blue-500/25 hover:bg-[#0e1420]',
+                    'hover:border-primary/25 transition-all duration-300 hover:bg-[#0e1420]',
                     i === 0 && 'lg:col-span-2'
                   )}
                 >
                   {i === 0 && (
-                    <div className="pointer-events-none absolute inset-0 rounded-xl bg-linear-to-br from-blue-600/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                    <div className="from-primary/5 pointer-events-none absolute inset-0 rounded-xl bg-linear-to-br to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                   )}
                   <div className="relative flex items-start gap-4">
-                    <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-blue-500/20 bg-blue-500/10 transition-all group-hover:border-blue-500/35 group-hover:bg-blue-500/18">
-                      <Icon size={15} className="text-blue-400" />
+                    <div className="border-primary/20 bg-primary/10 group-hover:border-primary/35 group-hover:bg-primary/18 mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border transition-all">
+                      <Icon size={15} className="text-primary" />
                     </div>
                     <div>
                       <h3 className="mb-1.5 text-sm font-semibold text-white/90">
@@ -451,7 +453,7 @@ export default function LandingPage() {
               transition={{ duration: 0.5 }}
               className="mb-8 flex items-center gap-3"
             >
-              <Code2 size={14} className="text-blue-400" />
+              <Code2 size={14} className="text-primary" />
               <p className="text-xs font-semibold tracking-[0.2em] text-white/40 uppercase">
                 Built with
               </p>
@@ -471,7 +473,7 @@ export default function LandingPage() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.04, duration: 0.3 }}
-                  className="cursor-default rounded-full border border-white/9 bg-white/3 px-3 py-1.5 text-[12px] font-medium text-white/50 transition-all hover:border-blue-500/30 hover:bg-blue-500/7 hover:text-blue-300"
+                  className="hover:border-primary/30 hover:bg-primary/7 hover:text-primary cursor-default rounded-full border border-white/9 bg-white/3 px-3 py-1.5 text-[12px] font-medium text-white/50 transition-all"
                 >
                   {tech}
                 </motion.span>
@@ -484,7 +486,7 @@ export default function LandingPage() {
       {/* ── CTA ────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden px-6 py-28">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute top-1/2 left-1/2 h-100 w-175 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/10 blur-[110px]" />
+          <div className="bg-primary/10 absolute top-1/2 left-1/2 h-100 w-175 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[110px]" />
         </div>
 
         <div className="relative mx-auto max-w-3xl text-center">
@@ -510,7 +512,7 @@ export default function LandingPage() {
             Clone it.
             <br />
             Make it{' '}
-            <em className="bg-linear-to-r from-blue-300 to-blue-400 bg-clip-text text-transparent not-italic">
+            <em className="from-primary/70 to-primary bg-linear-to-r bg-clip-text text-transparent not-italic">
               yours.
             </em>
           </motion.h2>
@@ -533,20 +535,14 @@ export default function LandingPage() {
             transition={{ delay: 0.15, duration: 0.6 }}
             className="flex flex-wrap justify-center gap-3"
           >
-            <Button asChild size="lg" className="h-11 gap-1.5 px-8 font-medium">
-              <Link href="/login">
-                Explore the demo
-                <ArrowRight size={15} />
-              </Link>
-            </Button>
             <a
-              href="https://github.com/akinurrahman/vite-react-starter"
+              href="https://github.com/akinurrahman/next-auth-starter"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex h-11 items-center gap-2 rounded-md border border-white/10 bg-white/3 px-8 text-sm font-medium text-white/55 transition-all hover:border-white/15 hover:bg-white/7 hover:text-white/90"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-11 items-center gap-2 rounded-md px-8 text-sm font-medium shadow-sm transition-all"
             >
               <GitHubIcon size={16} />
-              View on GitHub
+              Clone on GitHub
             </a>
           </motion.div>
         </div>
@@ -556,8 +552,8 @@ export default function LandingPage() {
       <footer className="border-t border-white/6 px-6 py-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-5 w-5 items-center justify-center rounded-md bg-blue-500/80">
-              <Terminal size={10} className="text-white" />
+            <div className="bg-primary/80 flex h-5 w-5 items-center justify-center rounded-md">
+              <Terminal size={10} className="text-primary-foreground" />
             </div>
             <span className="text-sm font-medium text-white/35">next-auth-starter</span>
           </div>
@@ -565,7 +561,7 @@ export default function LandingPage() {
           <p className="text-[11px] text-white/22">
             Built by{' '}
             <a
-              href="https://github.com/akinurrahman/vite-react-starter"
+              href="https://github.com/akinurrahman/next-auth-starter"
               target="_blank"
               rel="noreferrer"
               className="transition-colors hover:text-white/50"
@@ -576,11 +572,11 @@ export default function LandingPage() {
           </p>
 
           <div className="flex items-center gap-5 text-xs text-white/30">
-            <Link href="/login" className="transition-colors hover:text-white/60">
-              Demo
+            <Link href="/theme-switcher" className="transition-colors hover:text-white/60">
+              Themes
             </Link>
             <a
-              href="https://github.com/akinurrahman/vite-react-starter"
+              href="https://github.com/akinurrahman/next-auth-starter"
               target="_blank"
               rel="noreferrer"
               className="transition-colors hover:text-white/60"
